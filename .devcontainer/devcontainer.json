@@ -1,0 +1,39 @@
+{
+  "name": "DDS406_Assignment 2 Dev Container",
+
+  // 使用已有 Dockerfile
+  "build": {
+    "context": "..",
+    "dockerfile": "../Assignment2.dockerfile"
+  },
+
+  // 容器中工作目录
+  "workspaceFolder": "/workspace",
+
+  // 挂载当前项目文件夹（以便本地和容器代码同步）
+  "mounts": [
+    "source=${localWorkspaceFolder},target=/workspace,type=bind"
+  ],
+
+  // 容器启动后自动安装 Python 依赖
+  // 此命令可以删除，因为依赖已经在 Dockerfile 中安装。
+  // 如果您需要其他在容器创建后执行的命令，可以保留此行并修改。
+  // "postCreateCommand": "pip install --upgrade pip && pip install -r requirements.txt",
+
+  // 显示在 VS Code 的 Dev Container 标题栏中
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "python.defaultInterpreterPath": "/usr/local/bin/python"
+      },
+      "extensions": [
+        "ms-python.python",
+        "ms-toolsai.jupyter",
+        "ms-azuretools.vscode-docker"
+      ]
+    }
+  },
+
+  // 推荐以 root 用户身份操作，除非你有特定用户设定
+  "remoteUser": "root"
+}

@@ -1,0 +1,21 @@
+今天編程遇到的問題與解決方案：
+
+1.  **問題：`Import "seaborn" could not be resolved from source`**
+    *   **原因：** `seaborn` 庫未安裝。
+    *   **解決方案：** 執行 `pip install seaborn`。
+
+2.  **問題：`Import "tensorflow.keras.optimizers" could not be resolved` 或 `Import "tensorflow.keras.optimizers.legacy" could not be resolved`**
+    *   **原因：** `tensorflow.keras.optimizers` 的匯入路徑在你的 TensorFlow 版本中可能已更改或不適用。
+    *   **解決方案：** 將 `from tensorflow.keras.optimizers.legacy import RMSprop` 修改為直接使用 `tf.optimizers.RMSprop()`，因為 `tensorflow` 已匯入為 `tf`。
+
+3.  **問題：NumPy 版本不兼容 (`A module that was compiled using NumPy 1.x cannot be run in NumPy 2.2.6 as it may crash.`) 及 `AttributeError: _ARRAY_API not found`**
+    *   **原因：** 安裝的 NumPy 版本 (`2.2.6`) 與 TensorFlow 不兼容。
+    *   **解決方案：** 將 NumPy 降級到 2 以下的版本，執行 `pip install 'numpy<2'`。
+
+4.  **問題：`ValueError: could not convert string to float: 'yes'` (在 `df.corr()` 處)**
+    *   **原因：** 數據框中在計算相關性之前仍存在未轉換為數值的字串類型列 (例如 `'yes'` 或 `'no'`)。
+    *   **解決方案：** 在數據預處理階段，修改標籤編碼邏輯，自動遍歷所有 `object` 類型的列 (非目標變數)，並對其進行 `LabelEncoder` 轉換，確保所有類別數據都轉換為數值。
+
+5.  **問題：`AttributeError: module 'keras.api._v2.keras' has no attribute 'keras'` (在使用 `tf.keras.models.Sequential()` 或 `tf.keras.layers.Dense()` 時)**
+    *   **原因：** `from tensorflow import keras as tf` 這行程式碼導致 `tf` 變數本身就已經是 `keras` 模組。因此，再使用 `tf.keras.models` 或 `tf.keras.layers` 會導致重複的路徑錯誤。
+    *   **解決方案：** 將所有 `tf.keras.models.Sequential()` 改為 `tf.models.Sequential()`，所有 `tf.keras.layers.Dense()` 改為 `tf.layers.Dense()`，以及 `tf.keras.optimizers.RMSprop()` 改為 `tf.optimizers.RMSprop()`。
